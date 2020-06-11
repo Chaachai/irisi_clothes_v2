@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::resource('brandss', 'BrandController');
+Route::resource('g_categories', 'GCategoriesController');
+Route::resource('categories', 'CategoryController');
+Route::resource('discounts', 'DiscountController');
+Route::resource('products', 'ProductController');
+Route::resource('roles', 'RoleController');

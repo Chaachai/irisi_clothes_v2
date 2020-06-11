@@ -1,45 +1,55 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Header from './Header'
 import Slider from './Slider'
+import SideMenu from './SideMenu'
+import ProductsList from './ProductsList'
 import Footer from './Footer'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
-import'bootstrap-css-only/css/bootstrap.min.css'
+import 'bootstrap-css-only/css/bootstrap.min.css'
 
 
 function App() {
     return (
-        <div>
-            <Header />
-            
-            <Container style={{paddingTop: 66,}}>
-                <Row>
-                    <Col sm={12}><Slider /></Col>
-                </Row>
-            </Container>
-            <br/>
-            <br/>
-            <div className="container">
-
-                <div className="row justify-content-center">
-                    <div className="col-md-8">
-                        <div className="card">
-                            <div className="card-header">Example Component Hamza</div>
-
-                            <div className="card-body">I'm an example component!</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <BrowserRouter>
             <div>
-                <Footer />
+
+                <div>
+                    <Header />
+                </div>
+                <div style={{ paddingTop: 66, }}>
+                    <Row>
+                        <Col style={{ paddingLeft: 57, }} sm={2}><SideMenu /></Col>
+                        <Col sm={10}><Slider /></Col>
+                    </Row>
+                </div>
+
+
+                {/* <Container style={{ paddingTop: 66, }}>
+                    <Row>
+                        <Col sm={2}><SideMenu /></Col>
+                        <Col sm={10}><Slider /></Col>
+                    </Row>
+                </Container> */}
+
+                <Container style={{ paddingTop: 66, }}>
+                    <Row>
+                        <Col sm={12}><ProductsList /></Col>
+                    </Row>
+                </Container>
+
+
+                <div>
+                    <Footer />
+                </div>
+
             </div>
-            
-        </div>
+        </BrowserRouter>
     );
 }
 
