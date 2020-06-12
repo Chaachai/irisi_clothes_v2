@@ -1,139 +1,69 @@
-import React, { useState } from "react";
-import { Link } from 'react-router-dom';
-import { MegaMenu } from 'primereact/megamenu';
-import 'primereact/resources/themes/nova-light/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';
-
-
-
-
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { MegaMenu } from "primereact/megamenu";
+import "primereact/resources/themes/nova-light/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import { result } from "lodash";
 
 const SideMenu = () => {
-    const [items, setItems] = useState([
-        {
-            label: 'Videos', icon: 'pi pi-fw pi-video',
+    // const [g_categories_result, setG_categories_result] = useState([]);
+    // const [categories_result, SetCategories_result] = useState([]);
+    const [items, setItems] = useState([]);
+
+    const getCategoriesByGCategory = (id, categories) => {
+        console.log("in get Categories By GCategory ");
+        let array = [];
+        categories.forEach(element => {
+            if (element.g_category_id === id) {
+                let ob = {
+                    label: element.name
+                };
+                array.push(ob);
+            }
+        });
+        return array;
+    };
+
+    const itemObj = (label, items) => {
+        let obj = {
+            label: label,
             items: [
                 [
                     {
-                        label: 'Video 1',
-                        items: [{ label: 'Video 1.1' }, { label: 'Video 1.2' }]
-                    },
-                    {
-                        label: 'Video 2',
-                        items: [{ label: 'Video 2.1' }, { label: 'Video 2.2' }]
-                    }
-                ],
-                [
-                    {
-                        label: 'Video 3',
-                        items: [{ label: 'Video 3.1' }, { label: 'Video 3.2' }]
-                    },
-                    {
-                        label: 'Video 4',
-                        items: [{ label: 'Video 4.1' }, { label: 'Video 4.2' }]
+                        items: items
                     }
                 ]
             ]
-        },
-        {
-            label: 'Users', icon: 'pi pi-fw pi-users',
-            items: [
-                [
-                    {
-                        label: 'User 1',
-                        items: [{ label: 'User 1.1' }, { label: 'User 1.2' }]
-                    },
-                    {
-                        label: 'User 2',
-                        items: [{ label: 'User 2.1' }, { label: 'User 2.2' }]
-                    },
-                ],
-                [
-                    {
-                        label: 'User 3',
-                        items: [{ label: 'User 3.1' }, { label: 'User 3.2' }]
-                    },
-                    {
-                        label: 'User 4',
-                        items: [{ label: 'User 4.1' }, { label: 'User 4.2' }]
-                    }
-                ],
-                [
-                    {
-                        label: 'User 5',
-                        items: [{ label: 'User 5.1' }, { label: 'User 5.2' }]
-                    },
-                    {
-                        label: 'User 6',
-                        items: [{ label: 'User 6.1' }, { label: 'User 6.2' }]
-                    }
-                ]
-            ]
-        },
-        {
-            label: 'Events', icon: 'pi pi-fw pi-calendar',
-            items: [
-                [
-                    {
-                        label: 'Event 1',
-                        items: [{ label: 'Event 1.1' }, { label: 'Event 1.2' }]
-                    },
-                    {
-                        label: 'Event 2',
-                        items: [{ label: 'Event 2.1' }, { label: 'Event 2.2' }]
-                    }
-                ],
-                [
-                    {
-                        label: 'Event 3',
-                        items: [{ label: 'Event 3.1' }, { label: 'Event 3.2' }]
-                    },
-                    {
-                        label: 'Event 4',
-                        items: [{ label: 'Event 4.1' }, { label: 'Event 4.2' }]
-                    }
-                ]
-            ]
-        },
-        {
-            label: 'Settings', icon: 'pi pi-fw pi-cog',
-            items: [
-                [
-                    {
-                        label: 'Setting 1',
-                        items: [{ label: 'Setting 1.1' }, { label: 'Setting 1.2' }]
-                    },
-                    {
-                        label: 'Setting 2',
-                        items: [{ label: 'Setting 2.1' }, { label: 'Setting 2.2' }]
-                    },
-                    {
-                        label: 'Setting 3',
-                        items: [{ label: 'Setting 3.1' }, { label: 'Setting 3.2' }]
-                    }
-                ],
-                [
-                    {
-                        label: 'Technology 4',
-                        items: [{ label: 'Setting 4.1' }, { label: 'Setting 4.2' }]
-                    }
-                ]
-            ]
-        }
-    ]);
+        };
 
+        return obj;
+    };
+    useEffect(() => {
+        axios
+            .all([axios.get("/api/g_categories"), axios.get("/api/categories")])
+            .then(
+                axios.spread((g_categoriesQuery, categoriesQuery) => {
+                    let itemsArray = [];
 
+                    g_categoriesQuery.data.forEach(element => {
+                        itemsArray.push(
+                            itemObj(
+                                element.name,
+                                getCategoriesByGCategory(
+                                    element.id,
+                                    categoriesQuery.data
+                                )
+                            )
+                        );
+                    });
 
+                    setItems(itemsArray);
+                })
+            );
+    }, []);
 
-
-
-    return (
-        <MegaMenu model={items} orientation="vertical" />
-    )
-
-
-}
-
+    return <MegaMenu model={items} orientation="vertical" />;
+};
 
 export default SideMenu;

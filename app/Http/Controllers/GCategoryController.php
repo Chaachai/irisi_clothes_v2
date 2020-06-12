@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\GCategory;
 
 class GCategoryController extends Controller
 {
@@ -14,6 +15,9 @@ class GCategoryController extends Controller
     public function index()
     {
         //
+        $g_categories = GCategory::all();
+
+        return $g_categories->toJson();
     }
 
     /**

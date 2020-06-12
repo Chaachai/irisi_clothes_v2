@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Product;
+use App\GCategory;
+use App\Category;
+use SebastianBergmann\Environment\Console;
 
 class ProductController extends Controller
 {
@@ -15,11 +19,30 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')
-                     ->select(DB::raw('*'))
-                     ->get();
-
+        $products = Product::all();
         return $products->toJson();
+    }
+
+
+    public function getProductsByGCategory($g_cat_id)
+    {
+        Log::debug('g_cat_id == ' . $g_cat_id);
+        $res = [];
+        $categories = Category::all();
+        $products = Product::all();
+
+        foreach ($categories as $category) {
+            if ($category->g_category_id == $g_cat_id) {
+                foreach ($products as $product) {
+                    if ($product->category_id == $category->id) {
+                        array_push($res, $product);
+                    }
+                }
+            }
+        }
+
+        return json_encode($res);
+        // return $categories->toJson();
     }
 
     /**

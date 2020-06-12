@@ -20,8 +20,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::resource('brandss', 'BrandController');
-Route::resource('g_categories', 'GCategoriesController');
+Route::resource('g_categories', 'GCategoryController');
 Route::resource('categories', 'CategoryController');
 Route::resource('discounts', 'DiscountController');
 Route::resource('products', 'ProductController');
 Route::resource('roles', 'RoleController');
+
+
+Route::get('prodcat/{g_cat_id}', 'ProductController@getProductsByGCategory');
