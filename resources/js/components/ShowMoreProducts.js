@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
     MDBBtn,
     MDBRow,
@@ -58,34 +59,38 @@ function Tops(props) {
                         className="mb-lg-0 mb-4"
                     >
                         <div style={{ paddingBottom: 30 }}>
-                            <MDBCard className="align-items-center">
-                                <MDBCardImage
-                                    src={"/images/products/" + product.image}
-                                    top
-                                    alt="sample photo"
-                                    overlay="white-slight"
-                                />
-                                <MDBCardBody className="text-center">
-                                    <a href="#!" className="grey-text">
-                                        <h5>Tops</h5>
-                                    </a>
-                                    <h5>
-                                        <strong>
-                                            <a
-                                                href="#!"
-                                                className="dark-grey-text"
-                                            >
-                                                {product.name}
-                                            </a>
-                                        </strong>
-                                    </h5>
-                                    <h4 className="font-weight-bold blue-text">
-                                        <strong>
-                                            {product.unit_price} MAD
-                                        </strong>
-                                    </h4>
-                                </MDBCardBody>
-                            </MDBCard>
+                            <Link to={"/product/" + product.id}>
+                                <MDBCard className="align-items-center">
+                                    <MDBCardImage
+                                        src={
+                                            "/images/products/" + product.image
+                                        }
+                                        top
+                                        alt="sample photo"
+                                        overlay="white-slight"
+                                    />
+                                    <MDBCardBody className="text-center">
+                                        <a href="#!" className="grey-text">
+                                            <h5>Tops</h5>
+                                        </a>
+                                        <h5>
+                                            <strong>
+                                                <a
+                                                    href="#!"
+                                                    className="dark-grey-text"
+                                                >
+                                                    {product.name}
+                                                </a>
+                                            </strong>
+                                        </h5>
+                                        <h4 className="font-weight-bold blue-text">
+                                            <strong>
+                                                {product.unit_price} MAD
+                                            </strong>
+                                        </h4>
+                                    </MDBCardBody>
+                                </MDBCard>
+                            </Link>
                         </div>
                     </MDBCol>
                 ))}
