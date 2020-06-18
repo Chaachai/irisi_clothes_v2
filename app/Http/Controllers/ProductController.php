@@ -23,10 +23,18 @@ class ProductController extends Controller
         return $products->toJson();
     }
 
+    public function getProductsByKeywords($keyword)
+    {
+        Log::debug('keyword ========== ' . $keyword);
+        $regExp = '%' . $keyword . '%';
+        $products = Product::where('description', 'LIKE', $regExp)->get();
+        Log::debug('Results for keyword ========== ' . $products);
+        return $products->toJson();
+    }
 
     public function getProductsByGCategory($g_cat_id)
     {
-        Log::debug('g_cat_id == ' . $g_cat_id);
+        
         $res = [];
         $categories = Category::all();
         $products = Product::all();
@@ -74,7 +82,10 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        
+        $product = Product::where('id', $id)->first();
+        return response()->json($product);
+
     }
 
     /**

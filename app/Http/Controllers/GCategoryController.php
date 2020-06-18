@@ -49,7 +49,9 @@ class GCategoryController extends Controller
      */
     public function show($id)
     {
-        //
+        $g_category = GCategory::find($id);
+
+        return $g_category->toJson();
     }
 
     /**

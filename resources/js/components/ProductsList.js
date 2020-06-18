@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import {
     MDBBtn,
@@ -11,38 +12,14 @@ import {
 } from "mdbreact";
 
 const ProductsList = () => {
-    const [products, setProducts] = useState([]);
+    const [productsG3, setProductsG3] = useState([]);
     const [productsG1, setProductsG1] = useState([]);
     const [productsG2, setProductsG2] = useState([]);
     const [productsG5, setProductsG5] = useState([]);
 
-    useEffect(() => {
+    const fetchDataG1 = async => {
         axios
-            .get("/api/products")
-            .then(result => {
-                console.log(result);
-                setProducts(result.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios
-            .get("/api/prodcat/2")
-            .then(result => {
-                console.log(result);
-                setProductsG2(result.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }, []);
-
-    useEffect(() => {
-        axios
-            .get("/api/prodcat/1")
+            .get(`/api/prodcat/1`)
             .then(result => {
                 console.log(result);
                 setProductsG1(result.data);
@@ -50,19 +27,49 @@ const ProductsList = () => {
             .catch(err => {
                 console.log(err);
             });
-    }, []);
+    };
 
-    useEffect(() => {
+    const fetchDataG2 = async => {
         axios
-            .get("/api/prodcat/5")
+            .get(`/api/prodcat/2`)
             .then(result => {
                 console.log(result);
-                setProductsG5(result.data);
-                // console.log(productsG1);
+                setProductsG2(result.data);
             })
             .catch(err => {
                 console.log(err);
             });
+    };
+
+    const fetchDataG3 = async => {
+        axios
+            .get(`/api/prodcat/3`)
+            .then(result => {
+                console.log(result);
+                setProductsG3(result.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    const fetchDataG5 = async => {
+        axios
+            .get(`/api/prodcat/5`)
+            .then(result => {
+                console.log(result);
+                setProductsG5(result.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+
+    useEffect(() => {
+        fetchDataG1();
+        fetchDataG2();
+        fetchDataG3();
+        fetchDataG5();
     }, []);
 
     return (
@@ -81,36 +88,54 @@ const ProductsList = () => {
             </h3>
             <MDBRow>
                 {productsG1.slice(0, 4).map(product => (
-                    <MDBCol lg="3" md="6" className="mb-lg-0 mb-4">
-                        <MDBCard className="align-items-center">
-                            <MDBCardImage
-                                src={"images/products/" + product.image}
-                                top
-                                alt="sample photo"
-                                overlay="white-slight"
-                            />
-                            <MDBCardBody className="text-center">
-                                <a href="#!" className="grey-text">
+                    <MDBCol
+                        key={product.id}
+                        lg="3"
+                        md="6"
+                        className="mb-lg-0 mb-4"
+                        id={product.id}
+                        key={product.id}
+                    >
+                        <Link to={"/product/" + product.id}>
+                            <MDBCard className="align-items-center">
+                                <MDBCardImage
+                                    src={"images/products/" + product.image}
+                                    top
+                                    alt="sample photo"
+                                    overlay="white-slight"
+                                />
+                                <MDBCardBody className="text-center">
+                                    {/* <a href="#!" className="grey-text"> */}
                                     <h5>Tops</h5>
-                                </a>
-                                <h5>
-                                    <strong>
-                                        <a href="#!" className="dark-grey-text">
+                                    {/* </a> */}
+                                    <h5>
+                                        <strong>
+                                            {/* <a */}
+                                            {/* href="#!"
+                                                className="dark-grey-text"
+                                            > */}
                                             {product.name}
-                                        </a>
-                                    </strong>
-                                </h5>
-                                <h4 className="font-weight-bold blue-text">
-                                    <strong>{product.unit_price} MAD</strong>
-                                </h4>
-                            </MDBCardBody>
-                        </MDBCard>
+                                            {/* </a> */}
+                                        </strong>
+                                    </h5>
+                                    <h4 className="font-weight-bold blue-text">
+                                        <strong>
+                                            {product.unit_price} MAD
+                                        </strong>
+                                    </h4>
+                                </MDBCardBody>
+                            </MDBCard>
+                        </Link>
                     </MDBCol>
                 ))}
             </MDBRow>
             <br />
             <br />
-            <MDBBtn gradient="blue">Show More</MDBBtn>
+
+            <Link to="/show/1" key="1">
+                <MDBBtn gradient="blue">Show More</MDBBtn>
+            </Link>
+
             <br />
             <br />
             <hr />
@@ -119,45 +144,53 @@ const ProductsList = () => {
             </h3>
 
             <MDBRow>
-                {products.map(
-                    product =>
-                        product.category_id == 16 && (
-                            <MDBCol lg="3" md="6" className="mb-lg-0 mb-4">
-                                <MDBCard className="align-items-center">
-                                    <MDBCardImage
-                                        src={"images/products/" + product.image}
-                                        top
-                                        alt="sample photo"
-                                        overlay="white-slight"
-                                    />
-                                    <MDBCardBody className="text-center">
-                                        <a href="#!" className="grey-text">
-                                            <h5>Bloose</h5>
-                                        </a>
-                                        <h5>
-                                            <strong>
-                                                <a
-                                                    href="#!"
-                                                    className="dark-grey-text"
-                                                >
-                                                    {product.name}
-                                                </a>
-                                            </strong>
-                                        </h5>
-                                        <h4 className="font-weight-bold blue-text">
-                                            <strong>
-                                                {product.unit_price} MAD
-                                            </strong>
-                                        </h4>
-                                    </MDBCardBody>
-                                </MDBCard>
-                            </MDBCol>
-                        )
-                )}
+                {productsG3.slice(0, 4).map(product => (
+                    <MDBCol
+                        key={product.id}
+                        lg="3"
+                        md="6"
+                        className="mb-lg-0 mb-4"
+                        id={product.id}
+                        key={product.id}
+                    >
+                        <Link to={"/product/" + product.id}>
+                            <MDBCard className="align-items-center">
+                                <MDBCardImage
+                                    src={"/images/products/" + product.image}
+                                    top
+                                    alt="sample photo"
+                                    overlay="white-slight"
+                                />
+                                <MDBCardBody className="text-center">
+                                    {/* <a href="#!" className="grey-text"> */}
+                                    <h5>Bloose</h5>
+                                    {/* </a> */}
+                                    <h5>
+                                        <strong>
+                                            {/* <a */}
+                                            {/* href="#!"
+                                                className="dark-grey-text"
+                                            > */}
+                                            {product.name}
+                                            {/* </a> */}
+                                        </strong>
+                                    </h5>
+                                    <h4 className="font-weight-bold blue-text">
+                                        <strong>
+                                            {product.unit_price} MAD
+                                        </strong>
+                                    </h4>
+                                </MDBCardBody>
+                            </MDBCard>
+                        </Link>
+                    </MDBCol>
+                ))}
             </MDBRow>
             <br />
             <br />
-            <MDBBtn gradient="blue">Show More</MDBBtn>
+            <Link to="/show/3">
+                <MDBBtn gradient="blue">Show More</MDBBtn>
+            </Link>
             <br />
             <br />
             <hr />
@@ -167,36 +200,50 @@ const ProductsList = () => {
 
             <MDBRow>
                 {productsG2.slice(0, 4).map(product => (
-                    <MDBCol lg="3" md="6" className="mb-lg-0 mb-4">
-                        <MDBCard className="align-items-center">
-                            <MDBCardImage
-                                src={"images/products/" + product.image}
-                                top
-                                alt="sample photo"
-                                overlay="white-slight"
-                            />
-                            <MDBCardBody className="text-center">
-                                <a href="#!" className="grey-text">
+                    <MDBCol
+                        key={product.id}
+                        lg="3"
+                        md="6"
+                        className="mb-lg-0 mb-4"
+                        id={product.id}
+                        key={product.id}
+                    >
+                        <Link to={"/product/" + product.id}>
+                            <MDBCard className="align-items-center">
+                                <MDBCardImage
+                                    src={"/images/products/" + product.image}
+                                    top
+                                    alt="sample photo"
+                                    overlay="white-slight"
+                                />
+                                <MDBCardBody className="text-center">
+                                    {/* <a href="#!" className="grey-text"> */}
                                     <h5>Bottoms</h5>
-                                </a>
-                                <h5>
-                                    <strong>
-                                        <a href="#!" className="dark-grey-text">
+                                    {/* </a> */}
+                                    <h5>
+                                        <strong>
+                                            {/* <a */}
+                                            {/* href="#!" className="dark-grey-text"> */}
                                             {product.name}
-                                        </a>
-                                    </strong>
-                                </h5>
-                                <h4 className="font-weight-bold blue-text">
-                                    <strong>{product.unit_price} MAD</strong>
-                                </h4>
-                            </MDBCardBody>
-                        </MDBCard>
+                                            {/* </a> */}
+                                        </strong>
+                                    </h5>
+                                    <h4 className="font-weight-bold blue-text">
+                                        <strong>
+                                            {product.unit_price} MAD
+                                        </strong>
+                                    </h4>
+                                </MDBCardBody>
+                            </MDBCard>
+                        </Link>
                     </MDBCol>
                 ))}
             </MDBRow>
             <br />
             <br />
-            <MDBBtn gradient="blue">Show More</MDBBtn>
+            <Link to="/show/2" key="2">
+                <MDBBtn gradient="blue">Show More</MDBBtn>
+            </Link>
             <br />
             <br />
             <hr />
@@ -206,39 +253,55 @@ const ProductsList = () => {
 
             <MDBRow>
                 {productsG5.slice(0, 4).map(product => (
-                    <MDBCol lg="3" md="6" className="mb-lg-0 mb-4">
-                        <MDBCard className="align-items-center">
-                            <MDBCardImage
-                                src={"images/products/" + product.image}
-                                top
-                                alt="sample photo"
-                                overlay="white-slight"
-                            />
-                            <MDBCardBody className="text-center">
-                                <a href="#!" className="grey-text">
+                    <MDBCol
+                        key={product.id}
+                        lg="3"
+                        md="6"
+                        className="mb-lg-0 mb-4"
+                        id={product.id}
+                        key={product.id}
+                    >
+                        <Link to={"/product/" + product.id}>
+                            <MDBCard className="align-items-center">
+                                <MDBCardImage
+                                    src={"images/products/" + product.image}
+                                    top
+                                    alt="sample photo"
+                                    overlay="white-slight"
+                                />
+                                <MDBCardBody className="text-center">
+                                    {/* <a href="#!" className="grey-text"> */}
                                     <h5>Belt</h5>
-                                </a>
-                                <h5>
-                                    <strong>
-                                        <a href="#!" className="dark-grey-text">
+                                    {/* </a> */}
+                                    <h5>
+                                        <strong>
+                                            {/* <a
+                                                href="#!"
+                                                className="dark-grey-text"
+                                            > */}
                                             {product.name}{" "}
                                             <MDBBadge pill color="danger">
                                                 NEW
                                             </MDBBadge>
-                                        </a>
-                                    </strong>
-                                </h5>
-                                <h4 className="font-weight-bold blue-text">
-                                    <strong>{product.unit_price} MAD</strong>
-                                </h4>
-                            </MDBCardBody>
-                        </MDBCard>
+                                            {/* </a> */}
+                                        </strong>
+                                    </h5>
+                                    <h4 className="font-weight-bold blue-text">
+                                        <strong>
+                                            {product.unit_price} MAD
+                                        </strong>
+                                    </h4>
+                                </MDBCardBody>
+                            </MDBCard>
+                        </Link>
                     </MDBCol>
                 ))}
             </MDBRow>
             <br />
             <br />
-            <MDBBtn gradient="blue">Show More</MDBBtn>
+            <Link to="/show/5" key="5">
+                <MDBBtn gradient="blue">Show More</MDBBtn>
+            </Link>
             <br />
         </section>
     );

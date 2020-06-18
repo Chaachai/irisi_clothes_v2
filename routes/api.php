@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\KeywordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use \Laravel\Passport\Http\Controllers\AccessTokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +16,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+Route::post('login', [AccessTokenController::class], 'issueToken')
+    ->middleware(['api-login', 'throttle']);
 
 Route::resource('brandss', 'BrandController');
 Route::resource('g_categories', 'GCategoryController');
@@ -26,5 +26,34 @@ Route::resource('discounts', 'DiscountController');
 Route::resource('products', 'ProductController');
 Route::resource('roles', 'RoleController');
 
+Route::resource('keywords', 'KeywordController');
+
+Route::get('productByKeyword/{keyword}', 'ProductController@getProductsByKeywords');
+
 
 Route::get('prodcat/{g_cat_id}', 'ProductController@getProductsByGCategory');
+
+
+
+Route::group(['middleware' => ['jwt.auth','api-header']], function () {
+  
+    // all routes to protected resources are registered here  
+    Route::get('users/list', function(){
+        $users = App\User::all();
+        
+        $response = ['success'=>true, 'data'=>$users];
+        return response()->json($response, 201);
+    });
+});
+Route::group(['middleware' => 'api-header'], function () {
+  
+    // The registration and login requests doesn't come with tokens 
+    // as users at that point have not been authenticated yet
+    // Therefore the jwtMiddleware will be exclusive of them
+
+    Route::post('user/login', 'UserController@login');
+    Route::post('user/register', 'UserController@register');
+});
+
+
+Route::get('images/{id}', 'PhotoController@getPhoto');
