@@ -25,10 +25,10 @@ class ProductController extends Controller
 
     public function getProductsByKeywords($keyword)
     {
-        Log::debug('keyword ========== ' . $keyword);
+        // Log::debug('keyword ========== ' . $keyword);
         $regExp = '%' . $keyword . '%';
         $products = Product::where('description', 'LIKE', $regExp)->get();
-        Log::debug('Results for keyword ========== ' . $products);
+        // Log::debug('Results for keyword ========== ' . $products);
         return $products->toJson();
     }
 

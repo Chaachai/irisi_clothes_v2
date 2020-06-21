@@ -25,15 +25,22 @@ Route::resource('categories', 'CategoryController');
 Route::resource('discounts', 'DiscountController');
 Route::resource('products', 'ProductController');
 Route::resource('roles', 'RoleController');
+Route::resource('carts', 'CartController');
+Route::resource('cart_items', 'CartItemController');
 
 Route::resource('keywords', 'KeywordController');
 
 Route::get('productByKeyword/{keyword}', 'ProductController@getProductsByKeywords');
+Route::get('getCartByUser/{user_id}', 'CartController@getCartByUser');
+Route::get('get_image/{photo_id}/{color}', 'PhotoController@getImageByColor');
+Route::get('get_items_by_photo/{cart_id}', 'CartItemController@getItemsWithPhoto');
+Route::get('updateCartItem/{data}', 'CartItemController@updateCartItem');
+Route::get('calculate_amount/{cart_id}', 'CartItemController@calculateTotalAmount');
 
 
 Route::get('prodcat/{g_cat_id}', 'ProductController@getProductsByGCategory');
 
-
+Route::get('items_by_cart/{cart_id}', 'CartItemController@getItemsByCart');
 
 Route::group(['middleware' => ['jwt.auth','api-header']], function () {
   

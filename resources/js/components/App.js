@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+import { createBrowserHistory } from "history";
 import {
     BrowserRouter,
     Route,
@@ -26,6 +27,7 @@ import Register from "./Register";
 import Cart from "./Cart";
 import DetailProductPage from "./DetailProductPage/DetailProductPage";
 
+const history = createBrowserHistory();
 class App extends Component {
     constructor(props) {
         super(props);
@@ -41,6 +43,28 @@ class App extends Component {
     };
 
     render() {
+        let locals = localStorage["appState"];
+        let cartState = localStorage["cartState"];
+
+        if (typeof locals === "undefined") {
+            // console.log("UNDEFINED++  ", locals);
+            let appState = {
+                isLoggedIn: false,
+                user: {}
+            };
+            localStorage["appState"] = JSON.stringify(appState);
+        } else {
+            // console.log("NOT UNDEFINED++  ", locals);
+        }
+
+        if (typeof myState === "undefined") {
+            // console.log("UNDEFINED++  ", locals);
+            let jsona = [];
+            localStorage["myState"] = JSON.stringify(jsona);
+        } else {
+            // console.log("NOT UNDEFINED++  ", locals);
+        }
+
         return (
             <HashRouter>
                 <div>
@@ -91,10 +115,12 @@ class App extends Component {
                                     />
 
                                     <Route
+                                        exact
                                         path="/login"
                                         render={props => <Login {...props} />}
                                     />
                                     <Route
+                                        exact
                                         path="/register"
                                         render={props => (
                                             <Register {...props} />
@@ -109,15 +135,21 @@ class App extends Component {
                             </Col>
                         </Row>
                     </Container>
-                    <Route
-                        exact
-                        path="/product/:id"
-                        render={props => {
-                            return (
-                                <DetailProductPage id={props.match.params.id} />
-                            );
-                        }}
-                    />
+                    <Switch>
+                        <Route
+                            exact
+                            path="/product/:id"
+                            render={props => {
+                                return (
+                                    <DetailProductPage
+                                        {...props}
+                                        id={props.match.params.id}
+                                        history={history}
+                                    />
+                                );
+                            }}
+                        />
+                    </Switch>
 
                     <div>
                         <Footer />

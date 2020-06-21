@@ -23,6 +23,22 @@ class PhotoController extends Controller
 
      return response()->json($photos);
 }
+
+
+    public function getImageByColor($product_id,$color){
+
+        $photo = DB::table('photos')
+        ->select(DB::raw('*'))
+        ->where('product_id', '=', $product_id)
+        ->where('color', '=', $color)
+        ->first();
+
+        return response()->json($photo);
+
+
+
+
+    }
     /**
      * Display a listing of the resource.
      *

@@ -48,10 +48,7 @@ function searchResult(props) {
                                 <div style={{ paddingBottom: 30 }}>
                                     <MDBCard className="align-items-center">
                                         <MDBCardImage
-                                            src={
-                                                "/images/products/" +
-                                                product.image
-                                            }
+                                            src={"storage/" + product.image}
                                             top
                                             alt="sample photo"
                                             overlay="white-slight"

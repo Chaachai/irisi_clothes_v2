@@ -44,7 +44,7 @@ const HeaderNotConnected = props => (
                 <Nav.Link>
                     <Link
                         style={{ textDecoration: "none", color: "Gray" }}
-                        to="/Cart"
+                        to="/cart"
                     >
                         Cart
                     </Link>

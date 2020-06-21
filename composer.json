@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
         "symfony/psr-http-message-bridge": "^2.0",
+        "tcg/voyager": "^1.4",
         "tymon/jwt-auth": "^1.0"
     },
     "require-dev": {
@@ -63,5 +64,11 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ]
+    },
+    "repositories": {
+        "hooks": {
+            "type": "composer",
+            "url": "https://larapack.io"
+        }
     }
 }

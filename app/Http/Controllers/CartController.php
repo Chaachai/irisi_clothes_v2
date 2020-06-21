@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+
+
+use App\Cart;
 
 class CartController extends Controller
 {
@@ -34,7 +39,28 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $cart = new Cart();
+        $cart->user_id = $request->input('user_id');
+        // Log::debug('request ========== ' . $request);
+    	$cart->save();
+
+    	// return redirect('brands');
+    }
+
+
+    public function getCartByUser($user_id){
+
+        $cart = DB::table('carts')
+        ->select(DB::raw('*'))
+        ->where('user_id', '=', $user_id)
+        ->first();
+
+        // return $cart->toJson();
+        return response()->json($cart);
+
+        
+
+
     }
 
     /**

@@ -152,15 +152,15 @@ const Login = ({ login, history }) => {
                                                 setPassword(event.target.value)
                                             }
                                         />
-                                        <div class="text-center custom-checkbox">
+                                        <div className="text-center custom-checkbox">
                                             <input
                                                 type="checkbox"
-                                                class="custom-control-input"
+                                                className="custom-control-input"
                                                 id="defaultChecked2"
                                             />
                                             <label
-                                                class="custom-control-label"
-                                                for="defaultChecked2"
+                                                className="custom-control-label"
+                                                // for="defaultChecked2"
                                             >
                                                 Remember me
                                             </label>

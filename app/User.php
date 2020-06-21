@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable implements JWTSubject
+class User extends \TCG\Voyager\Models\User implements JWTSubject
 
 {
     use Notifiable;

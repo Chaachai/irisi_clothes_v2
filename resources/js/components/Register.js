@@ -33,6 +33,16 @@ const Register = ({ history }) => {
         registerUser(postData);
     };
 
+    function createCart(myData) {
+        console.log("CREATE CART FUNCTION");
+        axios
+            .post("/api/carts", myData)
+            .then(response => {})
+            .catch(error => {
+                console.log(error.response.data.errors);
+            });
+    }
+
     function registerUser(postData) {
         console.log("in the register methode");
 
@@ -70,13 +80,11 @@ const Register = ({ history }) => {
                     setLoggedIn(
                         JSON.parse(localStorage["appState"]).isLoggedIn
                     );
+                    let cart = {
+                        user_id: JSON.parse(localStorage["appState"]).user.id
+                    };
+                    createCart(cart);
                     history.push("/");
-                    // this.setState({
-                    //     isLoggedIn: appState.isLoggedIn,
-                    //     user: appState.user
-                    // });
-                    // redirect home
-                    //this.props.history.push("/");
                 } else {
                     alert(`Registration Failed!`);
                     $("#email-login-btn")
@@ -86,7 +94,7 @@ const Register = ({ history }) => {
             })
             .catch(error => {
                 alert("An Error Occured!" + error);
-                console.log(`${formData} ${error}`);
+                // console.log(`${formData} ${error}`);
                 $("#email-login-btn")
                     .removeAttr("disabled")
                     .html("Register");

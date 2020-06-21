@@ -24,8 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
+        \Illuminate\Support\Facades\Schema::defaultStringLength(191);
 
+        $this->registerPolicies();
         Passport::routes();
     }
 }
